@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  postgres_producer:
+    image: postgres:15
+    container_name: order_producer_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: order_producer_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - producer_db_data:/var/lib/postgresql/data
+
+  postgres_consumer:
+    image: postgres:15
+    container_name: order_consumer_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: order_consumer_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - consumer_db_data:/var/lib/postgresql/data
+
+volumes:
+  producer_db_data:
+  consumer_db_data:
