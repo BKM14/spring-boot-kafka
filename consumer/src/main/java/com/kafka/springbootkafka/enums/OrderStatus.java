@@ -1,7 +1,10 @@
 package com.kafka.springbootkafka.enums;
 
 public enum OrderStatus {
+    NONE,
     CREATED,
-    APPROVED,
-    PAYMENT
+    APPROVAL_ACCEPTED,
+    APPROVAL_REJECTED,
+    PAYMENT_ACCEPTED,
+    PAYMENT_FAILED
 }
