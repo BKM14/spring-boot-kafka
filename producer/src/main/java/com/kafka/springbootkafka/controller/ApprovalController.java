@@ -3,6 +3,7 @@ package com.kafka.springbootkafka.controller;
 import com.kafka.springbootkafka.dto.ApprovalDto;
 import com.kafka.springbootkafka.model.Approval;
 import com.kafka.springbootkafka.model.ApprovalStatus;
+import com.kafka.springbootkafka.model.Order;
 import com.kafka.springbootkafka.service.ApprovalService;
 import com.kafka.springbootkafka.service.OrderService;
 import lombok.Getter;
@@ -34,7 +35,9 @@ public class ApprovalController {
         }
 
         Approval approval = new Approval();
-        approval.setOrderId(approvalDto.getOrderId());
+        Order order = new Order();
+        order.setId(approvalDto.getOrderId());
+        approval.setOrder(order);
         if(approvalDto.isApprove())  {
             approval.setStatus(ApprovalStatus.APPROVED);
         } else {

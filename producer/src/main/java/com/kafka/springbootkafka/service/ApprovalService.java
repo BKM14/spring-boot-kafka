@@ -17,7 +17,7 @@ public class ApprovalService {
     }
 
     public boolean doesOrderIdExists(UUID orderId) {
-        return approvalRepository.existsByOrderId(orderId);
+        return approvalRepository.existsByOrder_Id(orderId);
     }
 
     public boolean doesApprovalIdExists(UUID approvalId) {
