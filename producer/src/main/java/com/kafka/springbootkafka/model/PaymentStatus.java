@@ -1,4 +1,4 @@
-package com.kafka.springbootkafka.Repository;
+package com.kafka.springbootkafka.model;
 
 public enum PaymentStatus {
     INITIALIZED,
