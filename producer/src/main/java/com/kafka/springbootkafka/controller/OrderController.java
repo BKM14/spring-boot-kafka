@@ -6,6 +6,7 @@ import com.kafka.springbootkafka.model.Approval;
 import com.kafka.springbootkafka.model.ApprovalStatus;
 import com.kafka.springbootkafka.model.Order;
 import com.kafka.springbootkafka.model.OrderStatus;
+import com.kafka.springbootkafka.service.ApprovalService;
 import com.kafka.springbootkafka.service.OrderService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class OrderController {
 
     private final OrderService orderService;
+    private final ApprovalService approvalService;
 
     @PostMapping("/newOrder")
     public ResponseEntity<String> createOrder(@RequestBody OrderDto orderDto) {
@@ -35,21 +37,7 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body("orderId: " + savedOrder.getId());
     }
 
-    @PutMapping("/approval")
-    public ResponseEntity<String> makeApproval(@PathVariable UUID id, @RequestBody ApprovalDto approvalDto) {
-        if(!orderService.doesIdExists(id)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order is not created");
-        }
 
-        Approval approval = new Approval();
-        if(approvalDto.isApprove())  {
-            approval.setStatus(ApprovalStatus.APPROVED);
-        } else {
-            approval.setStatus(ApprovalStatus.REJECTED);
-        }
-
-        Approval savedApproval = orderService.
-    }
 
 
 
