@@ -23,7 +23,7 @@ public class ApprovalController {
     private final OrderService orderService;
     private final ApprovalService approvalService;
 
-    @PutMapping("")
+    @PostMapping
     public ResponseEntity<String> makeApproval(@RequestBody ApprovalDto approvalDto) {
         if(!orderService.doesIdExists(approvalDto.getOrderId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order is not created");
@@ -34,6 +34,7 @@ public class ApprovalController {
         }
 
         Approval approval = new Approval();
+        approval.setOrderId(approvalDto.getOrderId());
         if(approvalDto.isApprove())  {
             approval.setStatus(ApprovalStatus.APPROVED);
         } else {

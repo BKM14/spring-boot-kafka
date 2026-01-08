@@ -19,9 +19,11 @@ public class Approval {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Order order;
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "order_id")
+//    private Order order;
+
+    private UUID orderId;
 
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
