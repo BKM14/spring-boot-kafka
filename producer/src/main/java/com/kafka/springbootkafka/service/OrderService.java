@@ -23,5 +23,9 @@ public class OrderService {
         return orderRepository.existsById(id);
     }
 
+    public Order getOrderDetailById(UUID id) {
+        return orderRepository.getOrdersById(id);
+    }
+
 
 }

@@ -25,8 +25,16 @@ public class PaymentService {
         return paymentRepository.existsByApproveId(id);
     }
 
+    public boolean doesPaymentIdExits(UUID id) {
+        return paymentRepository.existsById(id);
+    }
+
     public Payment savePayment(Payment payment) {
         return paymentRepository.save(payment);
+    }
+
+    public Payment getPaymentDetail(UUID id) {
+        return paymentRepository.getPaymentsById(id);
     }
 
     public void processMessage(PaymentDto paymentDto, Payment savedPayment) {

@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.UUID;
 
@@ -35,6 +36,18 @@ public class OrderController {
 
         Order savedOrder = orderService.saveOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body("orderId: " + savedOrder.getId());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<String> getOrderDetails(@PathVariable UUID id) {
+        if(!orderService.doesIdExists(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Order id does not exists");
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result =  objectMapper.writeValueAsString(orderService.getOrderDetailById(id));
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 
 

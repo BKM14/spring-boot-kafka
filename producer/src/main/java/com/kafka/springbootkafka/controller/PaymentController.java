@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.ObjectMapper;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -46,5 +46,18 @@ public class PaymentController {
         Payment savedPayment = paymentService.savePayment(payment);
         paymentService.processMessage(paymentDto, savedPayment);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("paymentId: " + savedPayment.getId());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<String> getPaymentDetail(@PathVariable UUID id) {
+        if(!paymentService.doesPaymentIdExits(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Payment Id does not exits");
+        }
+
+        Payment payment = paymentService.getPaymentDetail(id);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(payment);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 }

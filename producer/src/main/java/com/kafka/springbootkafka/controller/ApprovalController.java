@@ -12,6 +12,7 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.UUID;
 
@@ -46,5 +47,17 @@ public class ApprovalController {
 
         Approval savedApproval = approvalService.saveApproval(approval);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("approvalId: " + savedApproval.getId());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<String> getApprovalDetails(@PathVariable UUID id) {
+        if(!approvalService.doesApprovalIdExists(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Approval Id does not exits");
+        }
+        Approval approval = approvalService.getApprovalDetailById(id);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(approval);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
     }
 }

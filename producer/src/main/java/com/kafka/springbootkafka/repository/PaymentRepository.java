@@ -9,5 +9,6 @@ import java.util.UUID;
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, UUID> {
     boolean existsByApproveId(UUID approveId);
+    Payment getPaymentsById(UUID id);
 
 }
