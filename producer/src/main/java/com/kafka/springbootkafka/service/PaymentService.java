@@ -35,6 +35,7 @@ public class PaymentService {
         Order order = orderRepository.findById(approval.getOrder().getId())
                 .orElseThrow(() -> new RuntimeException("Order ID not found"));;
 
+        approval.setOrder(null);
         FinalMessage messgae = FinalMessage.builder()
                 .payment(savedPayment)
                 .approval(approval)
