@@ -4,7 +4,6 @@ import com.kafka.springbootkafka.dto.PaymentDto;
 import com.kafka.springbootkafka.model.Payment;
 import com.kafka.springbootkafka.model.PaymentStatus;
 import com.kafka.springbootkafka.service.ApprovalService;
-import com.kafka.springbootkafka.service.OrderService;
 import com.kafka.springbootkafka.service.PaymentService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +43,6 @@ public class PaymentController {
         }
 
         Payment savedPayment = paymentService.savePayment(payment);
-        paymentService.processMessage(paymentDto, savedPayment);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("paymentId: " + savedPayment.getId());
     }
 

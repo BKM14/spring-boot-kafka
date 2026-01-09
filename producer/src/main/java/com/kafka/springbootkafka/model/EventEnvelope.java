@@ -1,16 +1,20 @@
 package com.kafka.springbootkafka.model;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Setter
 @Builder
-public class FinalMessage {
+@Getter
+public class EventEnvelope {
+
     UUID eventId;
     EventType eventType;
-    LocalDateTime localDateTime;
+    LocalDateTime occurredAt;
     String payload;
+
 }
