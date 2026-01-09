@@ -1,6 +1,7 @@
 package com.kafka.springbootkafka.controller;
 
 import com.kafka.springbootkafka.dto.PaymentDto;
+import com.kafka.springbootkafka.model.ApprovalStatus;
 import com.kafka.springbootkafka.model.Payment;
 import com.kafka.springbootkafka.model.PaymentStatus;
 import com.kafka.springbootkafka.service.ApprovalService;
@@ -26,7 +27,8 @@ public class PaymentController {
 
     @PostMapping
     public ResponseEntity<String> makePayment(@RequestBody PaymentDto paymentDto) {
-        if(!approvalService.doesApprovalIdExists(paymentDto.getApproveId())) {
+        if(!approvalService.doesApprovalIdExists(paymentDto.getApproveId()) ||
+            approvalService.getApprovalStatus(paymentDto.getApproveId()).equals(ApprovalStatus.REJECTED)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot do the payment");
         }
 

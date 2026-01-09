@@ -37,6 +37,10 @@ public class ApprovalService {
         return approvalRepository.existsByOrder_Id(orderId);
     }
 
+    public ApprovalStatus getApprovalStatus(UUID id) {
+        return approvalRepository.getApprovalById(id).getStatus();
+    }
+
     public boolean doesApprovalIdExists(UUID approvalId) {
         return approvalRepository.existsById(approvalId);
     }
