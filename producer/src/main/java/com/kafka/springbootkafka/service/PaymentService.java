@@ -32,7 +32,7 @@ public class PaymentService {
     public void processMessage(PaymentDto paymentDto, Payment savedPayment) {
         Approval approval = approvalRepository.findById(paymentDto.getApproveId())
                 .orElseThrow(() -> new RuntimeException("Approval ID not found"));;
-        Order order = orderRepository.findById(approval.getOrderId())
+        Order order = orderRepository.findById(approval.getOrder().getId())
                 .orElseThrow(() -> new RuntimeException("Order ID not found"));;
 
         FinalMessage messgae = FinalMessage.builder()

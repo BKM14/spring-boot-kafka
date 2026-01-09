@@ -23,7 +23,7 @@ public class Approval {
     @JoinColumn(name = "order_id", unique = true, nullable = false)
     private Order order;
 
-    private UUID orderId;
+    //private UUID orderId;
 
     @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
