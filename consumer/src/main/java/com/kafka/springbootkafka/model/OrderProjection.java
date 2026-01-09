@@ -23,6 +23,8 @@ public class OrderProjection {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private UUID orderId;
+
     @Nonnull
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
