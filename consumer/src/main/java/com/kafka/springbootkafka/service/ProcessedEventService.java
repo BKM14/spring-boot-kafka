@@ -14,8 +14,8 @@ public class ProcessedEventService {
 
     private final ProcessedEventRepository repository;
 
-    public ProcessedEvent createEvent(ProcessedEvent processedEvent) {
-        return repository.save(processedEvent);
+    public void createEvent(ProcessedEvent processedEvent) {
+        repository.save(processedEvent);
     }
 
     public boolean alreadyProcessed(UUID orderId, EventType eventType) {

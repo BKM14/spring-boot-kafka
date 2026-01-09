@@ -27,6 +27,12 @@ services:
     volumes:
       - consumer_db_data:/var/lib/postgresql/data
 
+  kafka:
+    image: apache/kafka:3.9.1
+    container_name: order-kafka
+    ports:
+      - "9092:9092"
+
 volumes:
   producer_db_data:
   consumer_db_data:
