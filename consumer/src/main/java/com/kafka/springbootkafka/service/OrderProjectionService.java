@@ -29,7 +29,7 @@ public class OrderProjectionService {
                 EventType.NONE, Set.of(EventType.ORDER_APPROVED, EventType.ORDER_REJECTED, EventType.ORDER_CREATED, EventType.PAYMENT_COMPLETE, EventType.PAYMENT_FAILED),
                 EventType.ORDER_CREATED, Set.of(EventType.NONE, EventType.PAYMENT_COMPLETE, EventType.PAYMENT_FAILED),
                 EventType.ORDER_APPROVED, Set.of(EventType.NONE, EventType.ORDER_CREATED),
-                EventType.ORDER_REJECTED, Set.of(EventType.NONE, EventType.ORDER_CREATED),
+                EventType.ORDER_REJECTED, Set.of(EventType.NONE, EventType.ORDER_CREATED, EventType.PAYMENT_COMPLETE, EventType.PAYMENT_FAILED),
                 EventType.PAYMENT_COMPLETE, Set.of(EventType.NONE, EventType.ORDER_CREATED, EventType.ORDER_APPROVED, EventType.ORDER_REJECTED),
                 EventType.PAYMENT_FAILED, Set.of(EventType.NONE, EventType.ORDER_CREATED, EventType.ORDER_APPROVED, EventType.ORDER_REJECTED)
             );
@@ -108,13 +108,13 @@ public class OrderProjectionService {
     }
 
     private void isValidTransitionOrThrow(EventType prev, EventType next) {
-        if (prev == next || !invalidTransitions.get(prev).contains(next)) {
+        if (prev == next || invalidTransitions.get(prev).contains(next)) {
             throw new InvalidStateTransitionException(prev, next);
         }
     }
 
     private OrderProjection getOrderProjectionOrThrow(UUID id) {
-        return repository.findById(id).orElseThrow(() -> new OrderProjectionNotFoundException(id));
+        return repository.findByOrderId(id).orElseThrow(() -> new OrderProjectionNotFoundException(id));
     }
 
     private OrderProjection getValidOrderProjectionOrThrow(UUID orderId, EventType next) {

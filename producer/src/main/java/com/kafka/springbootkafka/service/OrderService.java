@@ -29,7 +29,7 @@ public class OrderService {
                 .payload(objectMapper.writeValueAsString(saved))
                 .build();
         System.out.println(objectMapper.writeValueAsString(envelope));
-        producer.sendMessage("order_lifecyle_v1", objectMapper.writeValueAsString(envelope));
+        producer.sendMessage("order_lifecycle_v1", objectMapper.writeValueAsString(envelope));
 
         return saved;
     }

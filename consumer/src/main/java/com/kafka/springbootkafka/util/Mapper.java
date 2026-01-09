@@ -12,6 +12,7 @@ public class Mapper {
                 .status(order.getOrderStatus())
                 .createdAt(order.getCreatedAt())
                 .lastEventType(EventType.NONE)
+                .amount(order.getAmount())
                 .build();
     }
 

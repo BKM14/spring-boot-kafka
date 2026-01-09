@@ -12,6 +12,8 @@ import com.kafka.springbootkafka.service.ProcessedEventService;
 import com.kafka.springbootkafka.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.hibernate.HibernateException;
+import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.kafka.annotation.BackOff;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.RetryableTopic;
@@ -33,46 +35,40 @@ public class Consumer {
     @RetryableTopic(
             backOff = @BackOff(delay = 1000, multiplier = 2, maxDelay = 5000),
             attempts = "5",
-            exclude = {NonRetryableException.class, JsonProcessingException.class}
+            include = {JDBCConnectionException.class, HibernateException.class}
     )
-    @KafkaListener(topics = "order_lifecyle_v1", groupId = "order_logging")
+    @KafkaListener(topics = "order_lifecycle_v1", groupId = "order_logging")
     public void consume(String data) {
         EventEnvelope envelope = objectMapper.readValue(data, EventEnvelope.class);
         String payload = envelope.getPayload();
+        log.info(envelope.getEventType().toString());
         switch (envelope.getEventType()) {
             case ORDER_CREATED -> {
                 ConsumedOrder order = objectMapper.readValue(payload, ConsumedOrder.class);
                 OrderProjection projection = Mapper.consumedOrderToOrderProjection(order);
-                if (checkIfAlreadyProcessed(order.getId(), envelope.getEventType())) return;
                 projectionService.createOrderProjection(projection);
-                ProcessedEvent processedEvent = ProcessedEvent.builder()
-                        .id(order.getId())
-                        .processedAt(LocalDateTime.now())
-                        .eventType(envelope.getEventType())
-                        .build();
-                processedEventService.createEvent(processedEvent);
                 log.info("Order projection created.");
             }
             case ORDER_APPROVED -> {
-                UUID orderId = objectMapper.readValue(payload, UUID.class);
+                UUID orderId = UUID.fromString(envelope.getPayload());
                 if (checkIfAlreadyProcessed(orderId, envelope.getEventType())) return;
                 projectionService.approveOrder(orderId);
                 log.info("Order approved.");
             }
             case ORDER_REJECTED -> {
-                UUID orderId = objectMapper.readValue(payload, UUID.class);
+                UUID orderId = UUID.fromString(envelope.getPayload());
                 if (checkIfAlreadyProcessed(orderId, envelope.getEventType())) return;
                 projectionService.rejectOrder(orderId);
                 log.info("Order rejected.");
             }
             case PAYMENT_COMPLETE -> {
-                UUID orderId = objectMapper.readValue(payload, UUID.class);
+                UUID orderId = UUID.fromString(payload);
                 if (checkIfAlreadyProcessed(orderId, envelope.getEventType())) return;
                 projectionService.paySuccessForOrder(orderId);
                 log.info("Payment complete.");
             }
             case PAYMENT_FAILED -> {
-                UUID orderId = objectMapper.readValue(payload, UUID.class);
+                UUID orderId = UUID.fromString(envelope.getPayload());
                 if (checkIfAlreadyProcessed(orderId, envelope.getEventType())) return;
                 projectionService.payFailedForOrder(orderId);
                 log.info("Payment failed.");

@@ -28,7 +28,7 @@ public class ApprovalService {
                 .payload(saved.getOrder().getId().toString())
                 .build();
 
-        producer.sendMessage("order_lifecyle_v1", objectMapper.writeValueAsString(envelope));
+        producer.sendMessage("order_lifecycle_v1", objectMapper.writeValueAsString(envelope));
 
         return saved;
     }

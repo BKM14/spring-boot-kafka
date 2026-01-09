@@ -17,7 +17,6 @@ services:
   postgres_consumer:
     image: postgres:15
     container_name: order_consumer_postgres
-    restart: unless-stopped
     environment:
       POSTGRES_DB: order_consumer_db
       POSTGRES_USER: postgres
