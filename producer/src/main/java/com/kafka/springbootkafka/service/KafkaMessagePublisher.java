@@ -15,7 +15,7 @@ public class KafkaMessagePublisher {
 
     public void sendOrderEventsToTopic(FinalMessage message) {
         try {
-            kafkaTemplate.send("topic", objectMapper.writeValueAsString(message));
+            kafkaTemplate.send("order_lifecycle_v1", objectMapper.writeValueAsString(message));
             System.out.println("Message sent to topic: " + message);
         } catch (Exception e) {
             System.out.println("Error sending message: " + e.getMessage());
