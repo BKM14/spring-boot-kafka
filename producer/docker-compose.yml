@@ -27,6 +27,7 @@ services:
     volumes:
       - consumer_db_data:/var/lib/postgresql/data
 
+
 volumes:
   producer_db_data:
   consumer_db_data:

@@ -9,5 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface ApprovalRepository extends JpaRepository<Approval, UUID> {
-    boolean existsByOrderId(UUID orderId);
+    boolean existsByOrder_Id(UUID orderId);
+    Approval getApprovalById(UUID id);
 }

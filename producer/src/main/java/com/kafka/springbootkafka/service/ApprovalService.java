@@ -17,10 +17,16 @@ public class ApprovalService {
     }
 
     public boolean doesOrderIdExists(UUID orderId) {
-        return approvalRepository.existsByOrderId(orderId);
+        return approvalRepository.existsByOrder_Id(orderId);
     }
 
     public boolean doesApprovalIdExists(UUID approvalId) {
         return approvalRepository.existsById(approvalId);
+    }
+
+    public Approval getApprovalDetailById(UUID id) {
+        Approval approval  = approvalRepository.getApprovalById(id);
+        approval.setOrder(null);
+        return approval;
     }
 }

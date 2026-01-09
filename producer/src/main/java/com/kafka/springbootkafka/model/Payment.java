@@ -11,22 +11,18 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "approvals")
+@Table(name = "payments")
 @Getter
 @Setter
-public class Approval {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", unique = true, nullable = false)
-    private Order order;
-
-    //private UUID orderId;
+    private UUID approveId;
 
     @Enumerated(EnumType.STRING)
-    private ApprovalStatus status;
+    private PaymentStatus status;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
